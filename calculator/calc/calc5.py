@@ -1,4 +1,5 @@
 import flet as ft
+import math
 
 
 class CalcButton(ft.ElevatedButton):
@@ -32,13 +33,12 @@ class ExtraActionButton(CalcButton):
 
 
 class CalculatorApp(ft.Container):
-    # application's root control (i.e. "view") containing all other controls
     def __init__(self):
         super().__init__()
         self.reset()
 
         self.result = ft.Text(value="0", color=ft.colors.WHITE, size=20)
-        self.width = 350
+        self.width = 500
         self.bgcolor = ft.colors.BLACK
         self.border_radius = ft.border_radius.all(20)
         self.padding = 20
@@ -47,18 +47,16 @@ class CalculatorApp(ft.Container):
                 ft.Row(controls=[self.result], alignment="end"),
                 ft.Row(
                     controls=[
-                        ExtraActionButton(
-                            text="AC", button_clicked=self.button_clicked
-                        ),
-                        ExtraActionButton(
-                            text="+/-", button_clicked=self.button_clicked
-                        ),
+                        ActionButton(text="10^x", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="AC", button_clicked=self.button_clicked),
+                        ExtraActionButton(text="+/-", button_clicked=self.button_clicked),
                         ExtraActionButton(text="%", button_clicked=self.button_clicked),
                         ActionButton(text="/", button_clicked=self.button_clicked),
                     ]
                 ),
                 ft.Row(
                     controls=[
+                        ActionButton(text="x²", button_clicked=self.button_clicked),
                         DigitButton(text="7", button_clicked=self.button_clicked),
                         DigitButton(text="8", button_clicked=self.button_clicked),
                         DigitButton(text="9", button_clicked=self.button_clicked),
@@ -67,6 +65,7 @@ class CalculatorApp(ft.Container):
                 ),
                 ft.Row(
                     controls=[
+                        ActionButton(text="x³", button_clicked=self.button_clicked),
                         DigitButton(text="4", button_clicked=self.button_clicked),
                         DigitButton(text="5", button_clicked=self.button_clicked),
                         DigitButton(text="6", button_clicked=self.button_clicked),
@@ -75,6 +74,7 @@ class CalculatorApp(ft.Container):
                 ),
                 ft.Row(
                     controls=[
+                        ActionButton(text="x!", button_clicked=self.button_clicked),
                         DigitButton(text="1", button_clicked=self.button_clicked),
                         DigitButton(text="2", button_clicked=self.button_clicked),
                         DigitButton(text="3", button_clicked=self.button_clicked),
@@ -83,9 +83,8 @@ class CalculatorApp(ft.Container):
                 ),
                 ft.Row(
                     controls=[
-                        DigitButton(
-                            text="0", expand=2, button_clicked=self.button_clicked
-                        ),
+                        ActionButton(text="1/x", button_clicked=self.button_clicked),
+                        DigitButton(text="0", expand=2, button_clicked=self.button_clicked),
                         DigitButton(text=".", button_clicked=self.button_clicked),
                         ActionButton(text="=", button_clicked=self.button_clicked),
                     ]
@@ -107,7 +106,7 @@ class CalculatorApp(ft.Container):
             else:
                 self.result.value = self.result.value + data
 
-        elif data in ("+", "-", "*", "/"):
+        elif data in ("+", "-", "*", "/", "x²", "x³", "x!", "10^x"):
             self.result.value = self.calculate(
                 self.operand1, float(self.result.value), self.operator
             )
@@ -124,11 +123,11 @@ class CalculatorApp(ft.Container):
             )
             self.reset()
 
-        elif data in ("%"):
-            self.result.value = float(self.result.value) / 100
-            self.reset()
+        elif data == "%":
+            self.result.value = str(float(self.result.value) / 100)
+            self.new_operand = True
 
-        elif data in ("+/-"):
+        elif data == "+/-":
             if float(self.result.value) > 0:
                 self.result.value = "-" + str(self.result.value)
 
@@ -137,30 +136,39 @@ class CalculatorApp(ft.Container):
                     self.format_number(abs(float(self.result.value)))
                 )
 
+        elif data == "1/x":
+            try:
+                self.result.value = str(1 / float(self.result.value))
+            except ZeroDivisionError:
+                self.result.value = "Error"
+
         self.update()
 
     def format_number(self, num):
         if num % 1 == 0:
             return int(num)
-        else:
-            return num
+        return num
 
     def calculate(self, operand1, operand2, operator):
-
-        if operator == "+":
-            return self.format_number(operand1 + operand2)
-
-        elif operator == "-":
-            return self.format_number(operand1 - operand2)
-
-        elif operator == "*":
-            return self.format_number(operand1 * operand2)
-
-        elif operator == "/":
-            if operand2 == 0:
-                return "Error"
-            else:
+        if operator in ("+", "-", "*", "/", "x²", "x³", "x!", "10^x"):
+            if operator == "+":
+                return self.format_number(operand1 + operand2)
+            elif operator == "-":
+                return self.format_number(operand1 - operand2)
+            elif operator == "*":
+                return self.format_number(operand1 * operand2)
+            elif operator == "/":
+                if operand2 == 0:
+                    return "Error"
                 return self.format_number(operand1 / operand2)
+            elif operator == "x²":
+                return self.format_number(operand1**2)
+            elif operator == "x³":
+                return self.format_number(operand1**3)
+            elif operator == "x!":
+                return self.format_number(math.factorial(int(operand1)))
+            elif operator == "10^x":
+                return self.format_number(10**operand1)
 
     def reset(self):
         self.operator = "+"
@@ -170,10 +178,7 @@ class CalculatorApp(ft.Container):
 
 def main(page: ft.Page):
     page.title = "Calc App"
-    # create application instance
     calc = CalculatorApp()
-
-    # add application's root control to the page
     page.add(calc)
 
 
