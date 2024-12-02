@@ -131,4 +131,11 @@ def main(page: ft.Page):
 
     # プログレスバーの定義付け
     progress_bar = ft.ProgressBar(visible=False)
+
+    # 天気予報表示
+    forecast_view = ft.Column(
+        expand=True,
+        spacing=10,
+        alignment=ft.MainAxisAlignment.START,
+    )
     
