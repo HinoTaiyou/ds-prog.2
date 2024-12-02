@@ -138,4 +138,14 @@ def main(page: ft.Page):
         spacing=10,
         alignment=ft.MainAxisAlignment.START,
     )
+
+
+    def fetch_data(url: str) -> Dict:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            show_error(f"データ取得エラー: {str(e)}")
+            return {}
     
