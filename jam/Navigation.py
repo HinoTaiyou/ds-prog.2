@@ -122,4 +122,11 @@ def main(page: ft.Page):
     selected_index = None  # 選択されたアイテムのインデックス
     forecast_view = ft.Column(spacing=10, expand=True)
 
+    # 地域リスト
+    region_list_view = ft.ListView(
+        expand=True,
+        spacing=10,
+        padding=10,
+    )
+
     
