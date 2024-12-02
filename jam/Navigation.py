@@ -164,4 +164,36 @@ def main(page: ft.Page):
                 show_error(f"地域データの読み込みに失敗しました: {str(e)}")
         finally:
             progress_bar.visible = False
+
+    def update_region_menu():
+        region_list_view.controls.clear()
+        for code, area in area_cache.items():
+            region_list_view.controls.append(
+                ft.ListTile(
+                    leading=ft.Icon(ft.icons.LOCATION_ON),
+                    title=ft.Text(area["name"]),
+                    subtitle=ft.Text(f"地域コード: {code}"),
+                    on_click=lambda e, code=code: load_forecast(code),
+                )
+            )
+        page.update()
+
+
+    def load_forecast(region_code: str):
+        try:
+            progress_bar.visible = True
+            page.update()
+
+            url = f"https://www.jma.go.jp/bosai/forecast/data/forecast/{region_code}.json"
+            data = fetch_data(url)
+
+            if data:
+                display_forecast(data)
+            else:
+                show_error("天気予報データが見つかりません。")
+        except Exception as e:
+            show_error(f"天気予報の取得に失敗しました: {str(e)}")
+        finally:
+            progress_bar.visible = False
+            page.update()
     
