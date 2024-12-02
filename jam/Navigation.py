@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from typing import Dict
 
 # JSON ファイルのパス
-json_path = os.path.join(os.path.dirname(__file__), 'region.json')
+json_path = os.path.join(os.path.dirname(__file__), 'data.json')
 
 # JSON ファイルを読み込む
 try:
@@ -112,3 +112,7 @@ def get_weather_icon(code: str) -> str:
     }
     # 聞いたことも無い天気の場合は❓を返す
     return weather_icons.get(code, "❓")
+
+def main(page: ft.Page):
+    page.title = "地域選択と天気予報表示"
+    page.theme_mode = "light"
