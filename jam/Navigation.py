@@ -196,4 +196,29 @@ def main(page: ft.Page):
         finally:
             progress_bar.visible = False
             page.update()
+
+
+    # 天気予報を表示
+    def display_forecast(data: Dict):
+        forecast_view.controls.clear()
+        forecasts = data[0]["timeSeries"][0]
+    # 予報日時と天気を表示
+        for i, date in enumerate(forecasts["timeDefines"]):
+            weather_code = forecasts["areas"][0]["weatherCodes"][i]
+            forecast_view.controls.append(
+                ft.Card(
+                    content=ft.Container(
+                        content=ft.Column(
+                            [
+                                ft.Text(format_date(date), size=18, weight="bold"),
+                                ft.Text(get_weather_text(weather_code)),
+                                ft.Text(get_weather_icon(weather_code), size=40),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                        ),
+                        padding=10,
+                    )
+                )
+            )
+    page.update()
     
