@@ -17,3 +17,8 @@ except FileNotFoundError:
 
 # 地域コードをキーにして地域名を取得できるようにする
 area_cache: Dict[str, Dict] = {}
+
+def format_date(date_str: str) -> str:
+# 日付文字列を受け取って、日本語の日付文字列に変換して返す
+    date = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+    return date.strftime("%Y年%m月%d日")
