@@ -116,3 +116,10 @@ def get_weather_icon(code: str) -> str:
 def main(page: ft.Page):
     page.title = "地域選択と天気予報表示"
     page.theme_mode = "light"
+
+    # 選択情報の表示
+    selected_item = ft.Text("天気予報", size=20)
+    selected_index = None  # 選択されたアイテムのインデックス
+    forecast_view = ft.Column(spacing=10, expand=True)
+
+    
