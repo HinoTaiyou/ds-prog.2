@@ -14,3 +14,6 @@ try:
         data = json.load(file)
 except FileNotFoundError:
     raise FileNotFoundError(f"JSON ファイル '{json_path}' が見つかりません。")
+
+# 地域コードをキーにして地域名を取得できるようにする
+area_cache: Dict[str, Dict] = {}
