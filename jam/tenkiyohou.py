@@ -165,3 +165,22 @@ def main(page: ft.Page):
         except requests.RequestException as e:
             show_error(f"データ取得エラー: {str(e)}")
             return {}
+        
+    # 地域リストを読み込む関数
+    def load_region_list():
+        try:
+            progress_bar.visible = True
+            page.update()
+
+            # 気象庁のAPIから地域データを取得
+            data = fetch_data("http://www.jma.go.jp/bosai/common/const/area.json")
+            if "offices" in data:
+                area_cache.update(data["offices"])
+                update_region_menu()
+            else:
+                show_error("地域データの形式が予期したものと異なります。")
+        except Exception as e:
+            show_error(f"地域データの読み込みに失敗しました: {str(e)}")
+        finally:
+            progress_bar.visible = False
+            page.update()
