@@ -109,3 +109,11 @@ def main(page: ft.Page):
         visible=False,
         expand=True,
     )
+
+    # 日付が選択されたときに過去の天気予報を表示する関数
+    def on_date_selected(e):
+        if e.date:
+            selected_date = e.date.strftime("%Y-%m-%d")
+            if current_region_code:
+                show_forecast_for_date(current_region_code, selected_date)
+        page.update()
