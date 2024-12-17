@@ -76,3 +76,6 @@ def main(page: ft.Page):
     # WeatherDBインスタンスを作成
     db = WeatherDB()
     current_region_code = None
+
+    # プログレスバーの初期設定
+    progress_bar = ft.ProgressBar(visible=False)
