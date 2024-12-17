@@ -298,3 +298,27 @@ def main(page: ft.Page):
             show_error("週間予報データの取得に失敗しました。")
 
         page.update()
+
+    page.add(
+        ft.Row(
+            [
+                ft.Container(
+                    width=300,
+                    content=region_list_view,
+                    bgcolor=ft.colors.SURFACE_VARIANT,
+                ),
+                ft.Container(
+                    expand=True,
+                    content=ft.Column([
+                        forecast_view,
+                        history_view,
+                    ]),
+                ),
+            ],
+            expand=True,
+        ),
+        progress_bar
+    )
+
+    # 地域リストを読み込む
+    load_region_list()
