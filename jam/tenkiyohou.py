@@ -29,3 +29,13 @@ class WeatherDB:
                         UNIQUE(area_code, forecast_date)
                     )
             """)
+                
+    def save_forecast(self, area_code: str, area_name: str, forecast_date: str,
+                     weather_code: str, temp_min: int, temp_max: int):
+        # 予報データをDBに保存。既存のデータがあれば上書きする
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("""
+                INSERT OR REPLACE INTO weather_forecasts
+                (area_code, area_name, forecast_date, weather_code, temp_min, temp_max)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (area_code, area_name, forecast_date, weather_code, temp_min, temp_max))
