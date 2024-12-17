@@ -322,3 +322,10 @@ def main(page: ft.Page):
 
     # 地域リストを読み込む
     load_region_list()
+
+# 日付をフォーマットする関数
+def format_date(date_str: str) -> str:
+    date = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+    weekdays = ["月", "火", "水", "木", "金", "土", "日"]
+    weekday = weekdays[date.weekday()]
+    return f"{date.month}/{date.day}\n({weekday})"
