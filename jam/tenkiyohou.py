@@ -155,3 +155,13 @@ def main(page: ft.Page):
                        color=ft.colors.ERROR)
             ]
         page.update()
+
+    # APIからデータを取得する関数
+    def fetch_data(url: str) -> Dict:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            show_error(f"データ取得エラー: {str(e)}")
+            return {}
