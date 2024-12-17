@@ -89,3 +89,10 @@ def main(page: ft.Page):
         )
         page.snack_bar.open = True
         page.update()
+
+    # 地域一覧を表示するListView
+    region_list_view = ft.ListView(
+        expand=True,
+        spacing=10,
+        padding=10,
+    )
