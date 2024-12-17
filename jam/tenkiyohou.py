@@ -13,23 +13,23 @@ class WeatherDB:
         self.db_path = db_path
         self.init_db()
 
-        def init_db(self):
+    def init_db(self):
         # DBがなければ新規作成し、テーブルを初期化する
-            with sqlite3.connect(self.db_path) as conn:
-                conn.execute("""
-                    CREATE TABLE IF NOT EXISTS weather_forecasts (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        area_code TEXT NOT NULL,
-                        area_name TEXT NOT NULL,
-                        forecast_date DATE NOT NULL,
-                        weather_code TEXT NOT NULL,
-                        temp_min INTEGER,
-                        temp_max INTEGER,
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        UNIQUE(area_code, forecast_date)
-                    )
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS weather_forecasts (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    area_code TEXT NOT NULL,
+                    area_name TEXT NOT NULL,
+                    forecast_date DATE NOT NULL,
+                    weather_code TEXT NOT NULL,
+                    temp_min INTEGER,
+                    temp_max INTEGER,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(area_code, forecast_date)
+                )
             """)
-                
+
     def save_forecast(self, area_code: str, area_name: str, forecast_date: str,
                      weather_code: str, temp_min: int, temp_max: int):
         # 予報データをDBに保存。既存のデータがあれば上書きする
@@ -58,7 +58,7 @@ class WeatherDB:
 
             query += " ORDER BY forecast_date DESC"
             return conn.execute(query, params).fetchall()
-        
+
     def get_forecast_by_date(self, area_code: str, selected_date: str):
         # 特定の日付の予報データを取得する
         with sqlite3.connect(self.db_path) as conn:
@@ -67,7 +67,7 @@ class WeatherDB:
                 WHERE area_code = ? AND date(forecast_date) = date(?)
                 ORDER BY forecast_date
             """, (area_code, selected_date)).fetchall()
-        
+
 def main(page: ft.Page):
     # アプリケーションのページ設定
     page.title = "地域ごとの天気予報"
@@ -165,7 +165,7 @@ def main(page: ft.Page):
         except requests.RequestException as e:
             show_error(f"データ取得エラー: {str(e)}")
             return {}
-        
+
     # 地域リストを読み込む関数
     def load_region_list():
         try:
@@ -184,7 +184,6 @@ def main(page: ft.Page):
         finally:
             progress_bar.visible = False
             page.update()
-
 
     # 地域選択メニューを更新する関数
     def update_region_menu():
