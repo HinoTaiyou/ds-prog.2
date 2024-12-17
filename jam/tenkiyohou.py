@@ -72,3 +72,7 @@ def main(page: ft.Page):
     # アプリケーションのページ設定
     page.title = "地域ごとの天気予報"
     page.theme_mode = "light"
+
+    # WeatherDBインスタンスを作成
+    db = WeatherDB()
+    current_region_code = None
