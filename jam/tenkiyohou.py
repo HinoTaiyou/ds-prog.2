@@ -79,3 +79,13 @@ def main(page: ft.Page):
 
     # プログレスバーの初期設定
     progress_bar = ft.ProgressBar(visible=False)
+
+    # エラーメッセージを表示する関数
+    def show_error(message: str):
+        page.snack_bar = ft.SnackBar(
+            content=ft.Text(message),
+            action="閉じる",
+            bgcolor=ft.colors.ERROR,
+        )
+        page.snack_bar.open = True
+        page.update()
