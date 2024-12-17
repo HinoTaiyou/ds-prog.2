@@ -184,3 +184,18 @@ def main(page: ft.Page):
         finally:
             progress_bar.visible = False
             page.update()
+
+
+    # 地域選択メニューを更新する関数
+    def update_region_menu():
+        region_list_view.controls.clear()
+        for code, area in area_cache.items():
+            region_list_view.controls.append(
+                ft.ListTile(
+                    leading=ft.Icon(ft.icons.LOCATION_ON),
+                    title=ft.Text(area["name"]),
+                    subtitle=ft.Text(f"地域コード: {code}"),
+                    on_click=lambda e, code=code: load_forecast(code),
+                )
+            )
+        page.update()
