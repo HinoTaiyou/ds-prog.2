@@ -96,3 +96,10 @@ def main(page: ft.Page):
         spacing=10,
         padding=10,
     )
+
+    # 天気予報表示用のビュー
+    forecast_view = ft.Column(
+        expand=True,
+        spacing=10,
+        alignment=ft.MainAxisAlignment.START,
+    )
