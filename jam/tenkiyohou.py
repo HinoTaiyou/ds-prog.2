@@ -103,3 +103,9 @@ def main(page: ft.Page):
         spacing=10,
         alignment=ft.MainAxisAlignment.START,
     )
+
+    # 過去の天気予報を表示するビュー
+    history_view = ft.Column(
+        visible=False,
+        expand=True,
+    )
